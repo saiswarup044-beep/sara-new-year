@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>My Sweetheart Sara 💖</title>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(135deg, #141e30, #243b55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* Container */
+.container {
+  width: 90%;
+  max-width: 420px;
+  text-align: center;
+  color: white;
+}
+
+/* Title */
+h1 {
+  font-family: 'Great Vibes', cursive;
+  font-size: 2.6em;
+  margin-bottom: 16px;
+  color: #ffdde1;
+  text-shadow: 0 0 15px rgba(255,150,200,0.9);
+  animation: glow 2s infinite alternate;
+}
+@keyframes glow {
+  from { text-shadow: 0 0 10px #ffb6c1; }
+  to { text-shadow: 0 0 30px #ff5fa2; }
+}
+
+/* Envelope */
+.envelope {
+  position: relative;
+  width: 100%;
+  height: 240px;
+  background: linear-gradient(135deg, #ff4b5c, #b33939);
+  border-radius: 14px;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+.flap {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 55%;
+  background: linear-gradient(135deg, #ff6f91, #ff4b5c);
+  clip-path: polygon(0 0, 50% 100%, 100% 0);
+  transform-origin: top;
+  transition: transform 0.8s ease;
+  z-index: 3;
+}
+.envelope.open .flap { transform: rotateX(180deg); }
+
+/* Message Card */
+.message {
+  position: absolute;
+  bottom: -130%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 88%;
+  background: linear-gradient(135deg, #ffffff, #ffeef3);
+  color: #444;
+  border-radius: 14px;
+  padding: 18px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.15em;
+  font-weight: 400;
+  line-height: 1.6;
+  opacity: 0;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+}
+
+/* Animations */
+.slide { animation: slideUp 0.9s ease forwards; }
+.fade { animation: fadeIn 1s ease forwards; }
+.zoom { animation: zoomIn 0.8s ease forwards; }
+.flip { animation: flipIn 0.9s ease forwards; }
+.bounce { animation: bounceIn 1s ease forwards; }
+.finalGlow { 
+  animation: glowFinal 1s infinite alternate; 
+  color: #ff1c68; font-weight: 600; font-size: 1.3em;
+}
+
+@keyframes slideUp { from {bottom: -130%; opacity:0;} to {bottom:20px; opacity:1;} }
+@keyframes fadeIn { from {opacity:0; bottom:20px;} to {opacity:1; bottom:20px;} }
+@keyframes zoomIn { from {transform:translateX(-50%) scale(0.6); opacity:0; bottom:20px;} to {transform:translateX(-50%) scale(1); opacity:1; bottom:20px;} }
+@keyframes flipIn { from {transform:translateX(-50%) rotateX(90deg); opacity:0; bottom:20px;} to {transform:translateX(-50%) rotateX(0); opacity:1; bottom:20px;} }
+@keyframes bounceIn { 0%{transform:translateX(-50%) scale(0.3); opacity:0;} 60%{transform:translateX(-50%) scale(1.1);} 100%{transform:translateX(-50%) scale(1); opacity:1; bottom:20px;} }
+@keyframes glowFinal { from {text-shadow:0 0 10px #ff1c68;} to {text-shadow:0 0 30px #ff8fa2;} }
+
+/* Tap hint */
+.tap { margin-top:10px; font-family: 'Poppins', sans-serif; font-size:0.9em; color:#ffeef3; animation: blink 1.5s infinite; }
+@keyframes blink { 50% { opacity:0.4; } }
+
+/* Floating hearts */
+.float { position: absolute; animation: rise 6s linear infinite; }
+@keyframes rise { from {transform:translateY(100vh) rotate(0); opacity:1;} to {transform:translateY(-10vh) rotate(360deg); opacity:0;} }
+
+/* Fireworks */
+.firework {
+  position: absolute;
+  width:6px; height:6px; border-radius:50%;
+  animation: explode 0.8s ease-out forwards;
+}
+@keyframes explode { from {transform:scale(1); opacity:1;} to {transform:scale(20); opacity:0;} }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>My Sweetheart Sara 💖</h1>
+
+  <div class="envelope" id="envelope" onclick="tapEnvelope()">
+    <div class="flap"></div>
+    <div class="message" id="msgBox"></div>
+  </div>
+
+  <div class="tap">Tap the envelope 💌</div>
+</div>
+
+<!-- Background Music -->
+<audio id="bgMusic" loop>
+  <source src="love.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const messages = [
+  "Sara ❤️",
+  "You are not just part of my life…",
+  "you are my whole life.",
+  "My happiness begins with you,",
+  "and my peace lives in your smile.",
+  "If I have ever hurt you 💔",
+  "I am truly sorry, my love.",
+  "Please forgive me, Sara ❤️",
+  "Every dream I see has your name.",
+  "This New Year, I choose YOU.",
+  "Forever and always…",
+  "I love you, Sara ❤️",
+  "Happy New Year 🎆"
+];
+
+const animations = ["slide","fade","zoom","flip","bounce"];
+let index = 0, opened = false;
+
+const env = document.getElementById("envelope");
+const box = document.getElementById("msgBox");
+const music = document.getElementById("bgMusic");
+
+function tapEnvelope() {
+  if (!opened) {
+    env.classList.add("open");
+    opened = true;
+    music.volume = 0.5; 
+    music.play().catch(err => console.log(err)); // play music
+    return;
+  }
+
+  if (index >= messages.length) return;
+
+  box.className = "message";
+  box.textContent = messages[index];
+
+  // Final message glow + fireworks
+  if(index === messages.length -1){
+    box.classList.add("finalGlow");
+    triggerFireworks();
+  } else {
+    box.classList.add(animations[index % animations.length]);
+  }
+
+  index++;
+}
+
+/* Floating hearts */
+const icons = ["❤️","💖","💘","💝","💕","✨","🌸"];
+setInterval(() => {
+  const el = document.createElement("div");
+  el.className = "float";
+  el.innerHTML = icons[Math.floor(Math.random()*icons.length)];
+  el.style.left = Math.random() * 100 + "vw";
+  el.style.fontSize = (Math.random() * 18 + 14) + "px";
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),6000);
+},300);
+
+/* Fireworks */
+function triggerFireworks(){
+  const colors = ["#ff5fa2","#ffe94f","#ff6f91","#ffd700"];
+  for(let i=0;i<20;i++){
+    const fire = document.createElement("div");
+    fire.className="firework";
+    fire.style.left = Math.random()*100 + "vw";
+    fire.style.top = Math.random()*50 + "vh";
+    fire.style.background = colors[Math.floor(Math.random()*colors.length)];
+    document.body.appendChild(fire);
+    setTimeout(()=>fire.remove(),1000);
+  }
+}
+</script>
+
+</body>
+</html>
